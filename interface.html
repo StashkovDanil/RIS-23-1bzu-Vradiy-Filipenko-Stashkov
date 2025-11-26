@@ -4,5 +4,18 @@
 <title>Умная кормушка</title>
 </head>
 <body>
+  <div class="container">
+  <header>
+    <h1>Умная кормушка</h1>
+  </header>
+
+  <section class="card">
+    <h2>Кормить сейчас</h2>
+    <div class="row">
+      <label>Размер порции (г)</label>
+      <input id="portionInput" type="number" min="1" value="{{ portion_size }}" />
+    </div>
+    <button id="feedBtn">Выдать корм</button>
+  </section>
 </body>
 </html>
