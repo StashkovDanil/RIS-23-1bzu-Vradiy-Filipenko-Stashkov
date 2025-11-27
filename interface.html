@@ -17,5 +17,19 @@
     </div>
     <button id="feedBtn">Выдать корм</button>
   </section>
+
+  <section class="card">
+    <h2>Остаток корма</h2>
+    <div class="big">{{ food_left }} г</div>
+    <div class="progress">
+      <div id="progressBar" style="width: {{ (food_left / 300 * 100) if food_left else 0 }}%"></div>
+    </div>
+    <button id="toggleSensor">Переключить датчик корма</button>
+  </section>
+
+  <section class="card">
+    <h2>Следующая кормёжка</h2>
+    <div id="nextFeed">{{ next_feed }}</div>
+  </section>
 </body>
 </html>
