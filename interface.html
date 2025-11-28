@@ -31,5 +31,18 @@
     <h2>Следующая кормёжка</h2>
     <div id="nextFeed">{{ next_feed }}</div>
   </section>
+
+  <section class="card">
+    <h2>Расписание</h2>
+    <div id="scheduleList">
+      {% for t in schedule %}}
+      <div class="sched-item"><input type="time" value="{{ t }}" /> <button class="del">×</button></div>
+      {% endfor %}
+    </div>
+    <div class="row">
+      <button id="addTime">Добавить время</button>
+      <button id="saveSchedule" class="secondary">Сохранить</button>
+    </div>
+  </section>
 </body>
 </html>
