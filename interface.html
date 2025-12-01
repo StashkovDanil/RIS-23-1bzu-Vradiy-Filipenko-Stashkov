@@ -44,5 +44,19 @@
       <button id="saveSchedule" class="secondary">Сохранить</button>
     </div>
   </section>
+
+  <section class="card">
+    <h2>Журнал кормежек</h2>
+    <ul id="logList">
+      {% for entry in log %}
+      <li>{{ entry.time }} — {{ entry.amount }} г — {{ entry.mode }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <footer>
+    <small>Работает в фоне, планировщик внутри приложения.</small>
+  </footer>
+</div>
 </body>
 </html>
