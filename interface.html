@@ -58,5 +58,14 @@
     <small>Работает в фоне, планировщик внутри приложения.</small>
   </footer>
 </div>
+
+<script>
+  document.getElementById('feedBtn').addEventListener('click', async () => {
+    const portion = parseInt(document.getElementById('portionInput').value) || 20;
+    const res = await api('/feed_now', 'POST', { amount: portion });
+    alert(res.message || JSON.stringify(res));
+    refreshStatus();
+  });
+</script>
 </body>
 </html>
