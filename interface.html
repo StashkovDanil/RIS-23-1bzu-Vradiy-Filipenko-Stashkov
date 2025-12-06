@@ -60,12 +60,22 @@
 </div>
 
 <script>
+    
   document.getElementById('feedBtn').addEventListener('click', async () => {
     const portion = parseInt(document.getElementById('portionInput').value) || 20;
     const res = await api('/feed_now', 'POST', { amount: portion });
     alert(res.message || JSON.stringify(res));
     refreshStatus();
   });
+
+  document.getElementById('addTime').addEventListener('click', () => {
+  const list = document.getElementById('scheduleList');
+  const div = document.createElement('div');
+  div.className = 'sched-item';
+  div.innerHTML = '<input type="time" value="12:00" /> <button class="del">×</button>';
+  list.appendChild(div);
+});
+
 </script>
 </body>
 </html>
