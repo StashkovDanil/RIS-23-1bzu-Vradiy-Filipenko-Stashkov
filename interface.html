@@ -76,6 +76,17 @@
   list.appendChild(div);
 });
 
+document.getElementById('saveSchedule').addEventListener('click', async () => {
+  const times = [...document.querySelectorAll('#scheduleList input')].map(i => i.value);
+  const res = await api('/save_schedule', 'POST', times);
+  if (res.status === 'ok') {
+    alert('Расписание сохранено');
+    refreshStatus();
+  } else {
+    alert('Ошибка: ' + JSON.stringify(res));
+  }
+});
+  
 </script>
 </body>
 </html>
