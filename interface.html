@@ -92,7 +92,21 @@ document.getElementById('saveSchedule').addEventListener('click', async () => {
   alert('Sensor pressed: ' + res.sensor_pressed);
   refreshStatus();
 });
-  
+
+  async function refreshStatus(){
+  const data = await api('/api/status');
+  document.getElementById('nextFeed').innerText = data.next_feed || '—';
+  document.getElementById('portionInput').value = data.portion_size;
+  document.querySelector('.big').innerText = data.food_remaining + ' г';
+  const pct = Math.max(0, Math.min(100, Math.round(data.food_remaining / 300 * 100)));
+  document.getElementById('progressBar').style.width = pct + '%';
+  const logList = document.getElementById('logList');
+  logList.innerHTML = '';
+  (data.log || []).forEach(e => {
+    const li = document.createElement('li');
+    li.innerText = `${e.time} — ${e.amount} г — ${e.mode}`;
+    logList.appendChild(li);
+  });
 </script>
 </body>
 </html>
