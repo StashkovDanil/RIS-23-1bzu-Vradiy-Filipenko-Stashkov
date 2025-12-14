@@ -86,6 +86,12 @@ document.getElementById('saveSchedule').addEventListener('click', async () => {
     alert('Ошибка: ' + JSON.stringify(res));
   }
 });
+
+  document.getElementById('toggleSensor').addEventListener('click', async () => {
+  const res = await api('/toggle_sensor', 'POST');
+  alert('Sensor pressed: ' + res.sensor_pressed);
+  refreshStatus();
+});
   
 </script>
 </body>
