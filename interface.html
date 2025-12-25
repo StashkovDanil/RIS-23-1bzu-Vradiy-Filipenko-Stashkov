@@ -107,6 +107,23 @@ document.getElementById('saveSchedule').addEventListener('click', async () => {
     li.innerText = `${e.time} — ${e.amount} г — ${e.mode}`;
     logList.appendChild(li);
   });
+
+      const schedInputs = document.querySelectorAll('#scheduleList input');
+  if (schedInputs.length !== data.schedule.length) {
+    const list = document.getElementById('scheduleList');
+    list.innerHTML = '';
+    (data.schedule || []).forEach(t => {
+      const div = document.createElement('div');
+      div.className = 'sched-item';
+      div.innerHTML = `<input type="time" value="${t}" /> <button class="del">×</button>`;
+      list.appendChild(div);
+    });
+  }
+  document.querySelectorAll('.del').forEach(btn => btn.onclick = (ev) => ev.target.parentElement.remove());
+}
+
+refreshStatus();
+setInterval(refreshStatus, 20000);
 </script>
 </body>
 </html>
