@@ -64,4 +64,34 @@ def feed_portion(amount, mode="manual"):
         save_json(FOOD_FILE, food)
 
         log_feed(amount, mode)
+scheduler = BackgroundScheduler()
+scheduled_job_ids = set()
 
+def schedule_reload():
+    """Clear scheduled jobs and re-create daily jobs for each time in settings."""
+    # Удалить предыдущее расписание
+    for job in scheduler.get_jobs():
+        if job.id.startswith("feed_time_"):
+            try:
+                scheduler.remove_job(job.id)
+            except Exception:
+                pass
+
+    settings = load_json(SETTINGS_FILE, {"portion":20, "schedule":[]})
+    times = settings.get("schedule", [])
+    portion = settings.get("portion", 20)
+    for t in times:
+        try:
+            hh, mm = t.split(":")
+            job_id = f"feed_time_{hh}_{mm}"
+            
+            scheduler.add_job(
+                func=lambda amount=portion: feed_portion(amount, mode="scheduled"),
+                trigger="cron",
+                hour=int(hh),
+                minute=int(mm),
+                id=job_id,
+                replace_existing=True
+            )
+        except Exception as e:
+            print("Bad schedule entry:", t, e)
