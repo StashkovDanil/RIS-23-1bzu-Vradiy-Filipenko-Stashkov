@@ -59,6 +59,30 @@
   </footer>
 </div>
 
+<div id="reportModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>📊 Отчет по кормлениям</h2>
+    
+    <div id="reportStats" class="report-stats">
+      <p>Загрузка статистики...</p>
+    </div>
+    
+    <h3>Последние 10 кормлений:</h3>
+    <table id="reportTable" class="report-table">
+      <thead>
+        <tr>
+          <th>Время</th>
+          <th>Количество (г)</th>
+          <th>Режим</th>
+        </tr>
+      </thead>
+      <tbody id="reportTableBody">
+      </tbody>
+    </table>
+  </div>
+</div>
+  
 <script>
     
   document.getElementById('feedBtn').addEventListener('click', async () => {
