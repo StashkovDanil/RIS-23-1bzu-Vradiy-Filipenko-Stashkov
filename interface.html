@@ -148,6 +148,74 @@ document.getElementById('saveSchedule').addEventListener('click', async () => {
 
 refreshStatus();
 setInterval(refreshStatus, 20000);
+
+async function openReport() {
+    const modal = document.getElementById('reportModal');
+    const statsDiv = document.getElementById('reportStats');
+    const tableBody = document.getElementById('reportTableBody');
+    
+    modal.style.display = 'block';
+    
+    statsDiv.innerHTML = '<p>Загрузка статистики...</p>';
+    
+    try {
+        const response = await fetch('/api/report');
+        const data = await response.json();
+        
+        if (data.total_feedings === 0) {
+            statsDiv.innerHTML = '<p>Пока нет данных о кормлениях</p>';
+            return;
+        }
+        
+        statsDiv.innerHTML = `
+            <div class="stat-card">
+                <div class="stat-value">${data.total_feedings}</div>
+                <div class="stat-label">Всего кормлений</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">${data.total_grams}</div>
+                <div class="stat-label">Всего грамм</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">${data.average_grams}</div>
+                <div class="stat-label">Средняя порция (г)</div>
+            </div>
+            <div class="stat-card manual">
+                <div class="stat-value">${data.by_mode.manual || 0}</div>
+                <div class="stat-label">Ручных кормлений</div>
+            </div>
+            <div class="stat-card scheduled">
+                <div class="stat-value">${data.by_mode.scheduled || 0}</div>
+                <div class="stat-label">По расписанию</div>
+            </div>
+        `;
+        
+        tableBody.innerHTML = data.last_10.map(item => `
+            <tr>
+                <td>${item.time}</td>
+                <td>${item.amount}</td>
+                <td>${item.mode}</td>
+            </tr>
+        `).join('');
+        
+    } catch (error) {
+        statsDiv.innerHTML = '<p style="color: red;">Ошибка загрузки данных</p>';
+        console.error('Error loading report:', error);
+    }
+}
+
+document.getElementById('reportBtn').addEventListener('click', openReport);
+
+document.querySelector('.close').addEventListener('click', () => {
+    document.getElementById('reportModal').style.display = 'none';
+});
+
+window.addEventListener('click', (event) => {
+    const modal = document.getElementById('reportModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});  
 </script>
 </body>
 </html>
