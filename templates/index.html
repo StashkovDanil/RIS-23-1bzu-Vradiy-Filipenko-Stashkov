@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Умная кормушка</title>
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Умная кормушка</h1>
+  </header>
+
+  <section class="card">
+    <h2>Ручная выдача</h2>
+    <div class="row">
+      <label>Размер порции (г)</label>
+      <input id="portionInput" type="number" min="1" value="{{ portion_size }}" />
+    </div>
+    <button id="feedBtn" style="margin-top: 10px;">Выдать корм</button>
+  </section>
+
+  <section class="card">
+    <h2>Остаток корма</h2>
+    <div class="big">{{ food_left }} г</div>
+    <div class="progress">
+      <div id="progressBar" style="width: {{ (food_left / 300 * 100) if food_left else 0 }}%"></div>
+    </div>
+    <!--<button id="toggleSensor">Переключить датчик корма</button>-->
+  </section>
+
+  <section class="card">
+    <h2>Следующая кормёжка</h2>
+    <div id="nextFeed">{{ next_feed }}</div>
+  </section>
+
+  <section class="card">
+    <h2>Расписание</h2>
+    <div id="scheduleList">
+      {% for t in schedule %}
+      <div class="sched-item"><input type="time" value="{{ t }}" /> <button class="del">×</button></div>
+      {% endfor %}
+    </div>
+    <div class="row">
+      <button id="addTime">Добавить время</button>
+      <button id="saveSchedule" class="secondary">Сохранить</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Журнал кормежек</h2>
+    <ul id="logList">
+      {% for entry in log %}
+      <li>{{ entry.time }} — {{ entry.amount }} г — {{ entry.mode }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <footer>
+    <small>Врадий Н.Ю., Филипенко Н.А., Сташков Д.А. РИС-23-1бзу</small>
+  </footer>
+</div>
+
+<script>
+async function api(path, method='GET', body=null) {
+  const opts = { method, headers: {} };
+  if (body !== null) {
+    opts.headers['Content-Type'] = 'application/json';
+    opts.body = JSON.stringify(body);
+  }
+  const r = await fetch(path, opts);
+  return r.json();
+}
+
+document.getElementById('feedBtn').addEventListener('click', async () => {
+  const portion = parseInt(document.getElementById('portionInput').value) || 20;
+  const res = await api('/feed_now', 'POST', { amount: portion });
+  alert(res.message || JSON.stringify(res));
+  refreshStatus();
+});
+
+document.getElementById('addTime').addEventListener('click', () => {
+  const list = document.getElementById('scheduleList');
+  const div = document.createElement('div');
+  div.className = 'sched-item';
+  div.innerHTML = '<input type="time" value="12:00" /> <button class="del">×</button>';
+  list.appendChild(div);
+});
+
+document.getElementById('saveSchedule').addEventListener('click', async () => {
+  const times = [...document.querySelectorAll('#scheduleList input')].map(i => i.value);
+  const res = await api('/save_schedule', 'POST', times);
+  if (res.status === 'ok') {
+    alert('Расписание сохранено');
+    refreshStatus();
+  } else {
+    alert('Ошибка: ' + JSON.stringify(res));
+  }
+});
+
+document.getElementById('toggleSensor').addEventListener('click', async () => {
+  const res = await api('/toggle_sensor', 'POST');
+  alert('Sensor pressed: ' + res.sensor_pressed);
+  refreshStatus();
+});
+
+async function refreshStatus(){
+  const data = await api('/api/status');
+  document.getElementById('nextFeed').innerText = data.next_feed || '—';
+  document.getElementById('portionInput').value = data.portion_size;
+  document.querySelector('.big').innerText = data.food_remaining + ' г';
+  const pct = Math.max(0, Math.min(100, Math.round(data.food_remaining / 300 * 100)));
+  document.getElementById('progressBar').style.width = pct + '%';
+  // update log
+  const logList = document.getElementById('logList');
+  logList.innerHTML = '';
+  (data.log || []).forEach(e => {
+    const li = document.createElement('li');
+    li.innerText = `${e.time} — ${e.amount} г — ${e.mode}`;
+    logList.appendChild(li);
+  });
+  // update schedule inputs if count differs
+  const schedInputs = document.querySelectorAll('#scheduleList input');
+  if (schedInputs.length !== data.schedule.length) {
+    // rebuild
+    const list = document.getElementById('scheduleList');
+    list.innerHTML = '';
+    (data.schedule || []).forEach(t => {
+      const div = document.createElement('div');
+      div.className = 'sched-item';
+      div.innerHTML = `<input type="time" value="${t}" /> <button class="del">×</button>`;
+      list.appendChild(div);
+    });
+  }
+  // attach delete handlers
+  document.querySelectorAll('.del').forEach(btn => btn.onclick = (ev) => ev.target.parentElement.remove());
+}
+
+refreshStatus();
+// refresh every 20 seconds so mobile sees updates
+setInterval(refreshStatus, 20000);
+</script>
+</body>
+</html>
+

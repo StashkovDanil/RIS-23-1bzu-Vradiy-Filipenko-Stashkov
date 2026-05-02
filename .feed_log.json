@@ -1,0 +1,122 @@
+[
+    {
+        "time": "2026-01-15 22:18:48",
+        "amount": 460,
+        "mode": "manual"
+    },
+    {
+        "time": "2026-01-15 22:18:02",
+        "amount": 660,
+        "mode": "manual"
+    },
+    {
+        "time": "2026-01-15 22:16:56",
+        "amount": 200,
+        "mode": "manual"
+    },
+    {
+        "time": "2026-01-15 22:16:30",
+        "amount": 200,
+        "mode": "manual"
+    },
+    {
+        "time": "2026-01-15 22:16:02",
+        "amount": 20,
+        "mode": "manual"
+    },
+    {
+        "time": "2025-11-23 13:52:27",
+        "amount": 50,
+        "mode": "manual"
+    },
+    {
+        "time": "2025-11-22 18:18:02",
+        "amount": 20,
+        "mode": "scheduled"
+    },
+    {
+        "time": "2025-11-22 18:17:29",
+        "amount": 50,
+        "mode": "manual"
+    },
+    {
+        "time": "2025-11-22 18:15:41",
+        "amount": 40,
+        "mode": "manual"
+    },
+    {
+        "time": "2025-11-22 18:15:31",
+        "amount": 20,
+        "mode": "manual"
+    },
+    {
+        "time": "2025-11-22 18:15:22",
+        "amount": 20,
+        "mode": "manual"
+    },
+    {
+        "time": "2025-11-22 18:15:10",
+        "amount": 20,
+        "mode": "manual"
+    },
+    {
+        "time": "2025-11-22 18:14:55",
+        "amount": 30,
+        "mode": "manual"
+    },
+    {
+        "time": "2025-11-22 18:14:48",
+        "amount": 20,
+        "mode": "manual"
+    },
+    {
+        "time": "2025-11-22 18:14:45",
+        "amount": 20,
+        "mode": "manual"
+    },
+    {
+        "time": "2025-11-22 18:14:40",
+        "amount": 20,
+        "mode": "manual"
+    },
+    {
+        "time": "2025-11-22 18:14:34",
+        "amount": 20,
+        "mode": "manual"
+    },
+    {
+        "time": "2025-11-22 18:14:02",
+        "amount": 20,
+        "mode": "scheduled"
+    },
+    {
+        "time": "2025-11-22 18:00:02",
+        "amount": 20,
+        "mode": "scheduled"
+    },
+    {
+        "time": "2025-11-19 21:22:54",
+        "amount": 30,
+        "mode": "manual"
+    },
+    {
+        "time": "2025-11-19 21:22:41",
+        "amount": 30,
+        "mode": "manual"
+    },
+    {
+        "time": "2025-11-19 21:22:34",
+        "amount": 20,
+        "mode": "manual"
+    },
+    {
+        "time": "2025-11-19 21:22:31",
+        "amount": 30,
+        "mode": "manual"
+    },
+    {
+        "time": "2025-11-19 21:21:25",
+        "amount": 20,
+        "mode": "manual"
+    }
+]
